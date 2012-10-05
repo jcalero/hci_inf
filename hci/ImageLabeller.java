@@ -108,12 +108,13 @@ public class ImageLabeller extends JFrame {
 	 * @param argv path to an image
 	 */
 	public static void main(String argv[]) {
+		String tempStr = "./images/U1003_0000.jpg";
 		try {
 			//create a window and display the image
 			ImageLabeller window = new ImageLabeller();
-			window.setupGUI(argv[0]);
+			window.setupGUI(tempStr);
 		} catch (Exception e) {
-			System.err.println("Image: " + argv[0]);
+			System.err.println("Image: " + tempStr);
 			e.printStackTrace();
 		}
 	}
