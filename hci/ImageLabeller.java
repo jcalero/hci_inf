@@ -81,7 +81,7 @@ public class ImageLabeller extends JFrame {
         toolboxPanel = new JPanel();
         
         //Add button
-		JButton newPolyButton = new JButton("New object");
+		JButton newPolyButton = new JButton("Close object");
 		newPolyButton.setMnemonic(KeyEvent.VK_N);
 		newPolyButton.setSize(50, 20);
 		newPolyButton.setEnabled(true);
