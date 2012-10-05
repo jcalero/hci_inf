@@ -19,7 +19,7 @@ import java.awt.event.WindowEvent;
  */
 public class ImageLabeller extends JFrame {
 	/**
-	 * some java stuff to get rid of warnings
+	 * some java stuff to get rid of warnings hello
 	 */
 	private static final long serialVersionUID = 1L;
 	
