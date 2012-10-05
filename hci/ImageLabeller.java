@@ -39,7 +39,7 @@ public class ImageLabeller extends JFrame {
 	ImagePanel imagePanel = null;
 	
 	/**
-	 * handles New Object button action
+	 * handles New Object button action teehee
 	 */
 	public void addNewPolygon() {
 		imagePanel.addNewPolygon();
