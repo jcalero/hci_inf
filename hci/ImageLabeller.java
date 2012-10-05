@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 /**
  * Main class of the program - handles display of the main window
@@ -39,10 +40,26 @@ public class ImageLabeller extends JFrame {
 	ImagePanel imagePanel = null;
 	
 	/**
-	 * handles New Object button action teehee
+	 * handles New Object button action
 	 */
 	public void addNewPolygon() {
 		imagePanel.addNewPolygon();
+	}
+	
+	/**
+	 * handles File browser button action
+	 */
+	public void openFileBrowser() {
+		File file = FileBrowser.open();
+		try {
+			//create a window and display the image
+			imagePanel = new ImagePanel(file.getPath());
+			imagePanel.setOpaque(true);
+			appPanel.add(imagePanel);
+		} catch (Exception e) {
+			System.err.println("Could not open image");
+			//e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -91,9 +108,23 @@ public class ImageLabeller extends JFrame {
 			    	addNewPolygon();
 			}
 		});
-		newPolyButton.setToolTipText("Click to add new object");
+		newPolyButton.setToolTipText("Click to close the current object. (N)");
+		
+		//Button for testing filebrowser.
+		JButton fileBrowserButton = new JButton("Open Image");
+		fileBrowserButton.setMnemonic(KeyEvent.VK_O);
+		fileBrowserButton.setSize(50, 20);
+		fileBrowserButton.setEnabled(true);
+		fileBrowserButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openFileBrowser();
+				
+			}
+		});
 		
 		toolboxPanel.add(newPolyButton);
+		toolboxPanel.add(fileBrowserButton);
 		
 		//add toolbox to window
 		appPanel.add(toolboxPanel);
@@ -108,13 +139,15 @@ public class ImageLabeller extends JFrame {
 	 * @param argv path to an image
 	 */
 	public static void main(String argv[]) {
-		String tempStr = "./images/U1003_0000.jpg";
+		String defaultImg = "./images/U1003_0000.jpg";
+		File file = FileBrowser.open();
 		try {
 			//create a window and display the image
 			ImageLabeller window = new ImageLabeller();
-			window.setupGUI(tempStr);
+			window.setupGUI(file.getPath());
 		} catch (Exception e) {
-			System.err.println("Image: " + tempStr);
+			System.err.println("Could not open image, opening default.");
+			System.err.println("Image: " + defaultImg);
 			e.printStackTrace();
 		}
 	}

@@ -152,6 +152,10 @@ public class ImagePanel extends JPanel implements MouseListener {
 		
 		currentPolygon = new ArrayList<Point>();
 	}
+	
+	public void openFileBrowser() {
+
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
