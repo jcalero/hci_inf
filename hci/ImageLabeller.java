@@ -29,10 +29,11 @@ public class ImageLabeller extends JFrame {
 	 */
 	JPanel appPanel = null;
 	
+	
 	/**
 	 * toolbox - put all buttons and stuff here!
 	 */
-	JPanel toolboxPanel = null;
+	ToolBox toolboxPanel = null;
 	
 	/**
 	 * image panel - displays image and editing area
@@ -85,6 +86,8 @@ public class ImageLabeller extends JFrame {
 
 		//setup main window panel
 		appPanel = new JPanel();
+		
+		
 		this.setLayout(new BoxLayout(appPanel, BoxLayout.X_AXIS));
 		this.setContentPane(appPanel);
 		
@@ -95,38 +98,9 @@ public class ImageLabeller extends JFrame {
         appPanel.add(imagePanel);
 
         //create toolbox panel
-        toolboxPanel = new JPanel();
+        toolboxPanel = new ToolBox(imagePanel, this);
         
-        //Add button
-		JButton newPolyButton = new JButton("Close object");
-		newPolyButton.setMnemonic(KeyEvent.VK_N);
-		newPolyButton.setSize(50, 20);
-		newPolyButton.setEnabled(true);
-		newPolyButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			    	addNewPolygon();
-			}
-		});
-		newPolyButton.setToolTipText("Click to close the current object. (N)");
-		
-		//Button for testing filebrowser.
-		JButton fileBrowserButton = new JButton("Open Image");
-		fileBrowserButton.setMnemonic(KeyEvent.VK_O);
-		fileBrowserButton.setSize(50, 20);
-		fileBrowserButton.setEnabled(true);
-		fileBrowserButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				openFileBrowser();
-				
-			}
-		});
-		
-		toolboxPanel.add(newPolyButton);
-		toolboxPanel.add(fileBrowserButton);
-		
-		//add toolbox to window
+        
 		appPanel.add(toolboxPanel);
 		
 		//display all the stuff

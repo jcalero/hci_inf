@@ -3,6 +3,7 @@ package hci;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -138,6 +139,10 @@ public class ImagePanel extends JPanel implements MouseListener {
 			g.setColor(Color.GREEN);
 			g.drawLine(firstVertex.getX(), firstVertex.getY(), lastVertex.getX(), lastVertex.getY());
 		}
+		
+		//else {
+		
+		//}
 	}
 	
 	/**
