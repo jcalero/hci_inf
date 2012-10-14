@@ -1,0 +1,1 @@
+INDEX VERSION 1.126+/afs/inf.ed.ac.uk/user/s09/s0909639/HCI/hci/hci/.metadata/.plugins/org.eclipse.jdt.core

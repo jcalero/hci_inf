@@ -4,11 +4,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -33,15 +35,16 @@ public class ImagePanel extends JPanel implements MouseListener {
 	 */
 	BufferedImage image = null;
 	
+	
 	/**
 	 * list of current polygon's vertices 
 	 */
-	ArrayList<Point> currentPolygon = null;
+	private ArrayList<Point> currentPolygon = null;
 	
 	/**
 	 * list of polygons
 	 */
-	ArrayList<ArrayList<Point>> polygonsList = null;
+	private ArrayList<ArrayList<Point>> polygonsList = null;
 	
 	/**
 	 * default constructor, sets up the window properties
@@ -59,6 +62,10 @@ public class ImagePanel extends JPanel implements MouseListener {
 		this.setMaximumSize(panelSize);
 		
 		addMouseListener(this);
+	}
+	
+	public ArrayList<Point> getPolygon(){
+		return currentPolygon;
 	}
 	
 	/**
@@ -91,6 +98,19 @@ public class ImagePanel extends JPanel implements MouseListener {
 		}
 	}
 	
+	public void rePaint(Graphics g){
+		ShowImage();
+		for(ArrayList<Point> polygon : polygonsList) {
+			drawPolygon(polygon);
+		
+		}
+		
+		//display current polygon
+		drawPolygon(currentPolygon);
+		
+	}
+	
+	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -102,10 +122,43 @@ public class ImagePanel extends JPanel implements MouseListener {
 		for(ArrayList<Point> polygon : polygonsList) {
 			drawPolygon(polygon);
 			finishPolygon(polygon);
+		
 		}
 		
+		//shade(g);
+		
+		
+		
 		//display current polygon
-		drawPolygon(currentPolygon);
+	
+		
+	}
+	
+	public void shade(Graphics g){
+		Graphics2D g2 = (Graphics2D)g;
+		g2.setPaint(Color.blue);
+		
+		ArrayList<Point> polygon = new ArrayList<Point>();
+		if (polygonsList.size()!=0){
+			
+		
+			for (int i = 0; i<polygonsList.size(); i++) {
+				polygon = polygonsList.get(i);
+		
+				Polygon p = new Polygon();
+			
+				for (int j = 0; j<polygon.size(); i++){
+					p.addPoint(polygon.get(j).getX(), polygon.get(j).getY());
+				}
+			
+			g2.fill(p);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+			          0.2f));
+
+	
+			}
+		
+		}
 	}
 	
 	/**
@@ -114,15 +167,24 @@ public class ImagePanel extends JPanel implements MouseListener {
 	 */
 	public void drawPolygon(ArrayList<Point> polygon) {
 		Graphics2D g = (Graphics2D)this.getGraphics();
-		g.setColor(Color.GREEN);
+		g.setColor(Color.RED);
 		for(int i = 0; i < polygon.size(); i++) {
 			Point currentVertex = polygon.get(i);
+			
 			if (i != 0) {
 				Point prevVertex = polygon.get(i - 1);
 				g.drawLine(prevVertex.getX(), prevVertex.getY(), currentVertex.getX(), currentVertex.getY());
 			}
-			g.fillOval(currentVertex.getX() - 5, currentVertex.getY() - 5, 10, 10);
+				g.fillOval(currentVertex.getX() - 5, currentVertex.getY() - 5, 5, 5);
+			
 		}
+		
+		
+		
+		//Point firstVertex = polygon.get(0);
+		//Point lastVertex = polygon.get(polygon.size() - 1);
+		//g.drawLine(firstVertex.getX(), firstVertex.getY(), lastVertex.getX(), lastVertex.getY());
+		
 	}
 	
 	/**
@@ -131,18 +193,17 @@ public class ImagePanel extends JPanel implements MouseListener {
 	 */
 	public void finishPolygon(ArrayList<Point> polygon) {
 		//if there are less than 3 vertices than nothing to be completed
-		if (polygon.size() >= 3) {
-			Point firstVertex = polygon.get(0);
-			Point lastVertex = polygon.get(polygon.size() - 1);
 		
-			Graphics2D g = (Graphics2D)this.getGraphics();
-			g.setColor(Color.GREEN);
-			g.drawLine(firstVertex.getX(), firstVertex.getY(), lastVertex.getX(), lastVertex.getY());
-		}
+		Point firstVertex = polygon.get(0);
+		Point lastVertex = polygon.get(polygon.size() - 1);
 		
-		//else {
+		Graphics2D g = (Graphics2D)this.getGraphics();
+		g.setColor(Color.RED);
+			
+		g.drawLine(firstVertex.getX(), firstVertex.getY(), lastVertex.getX(), lastVertex.getY());
 		
-		//}
+		System.out.println("finish Polygon");	
+		
 	}
 	
 	/**
@@ -150,12 +211,19 @@ public class ImagePanel extends JPanel implements MouseListener {
 	 */
 	public void addNewPolygon() {
 		//finish the current polygon if any
-		if (currentPolygon != null ) {
-			finishPolygon(currentPolygon);
+		if (currentPolygon.size() != 0 ) {
+			
+			
 			polygonsList.add(currentPolygon);
+			Graphics2D g = (Graphics2D)this.getGraphics();
+			g.setColor(Color.RED);
+			paint(g);
+			
+		
 		}
 		
 		currentPolygon = new ArrayList<Point>();
+
 	}
 	
 	public void openFileBrowser() {
@@ -182,7 +250,13 @@ public class ImagePanel extends JPanel implements MouseListener {
 				Point lastVertex = currentPolygon.get(currentPolygon.size() - 1);
 				g.drawLine(lastVertex.getX(), lastVertex.getY(), x, y);
 			}
-			g.fillOval(x-5,y-5,10,10);
+			
+			if (currentPolygon.size() == 0) {
+				g.fillOval(x-5,y-5, 10, 10);
+			} 
+			else {
+				g.fillOval(x-5,y-5, 5, 5);
+			}
 			
 			currentPolygon.add(new Point(x,y));
 			System.out.println(x + " " + y);

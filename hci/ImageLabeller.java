@@ -30,6 +30,8 @@ public class ImageLabeller extends JFrame {
 	JPanel appPanel = null;
 	
 	
+	
+	
 	/**
 	 * toolbox - put all buttons and stuff here!
 	 */
@@ -103,6 +105,8 @@ public class ImageLabeller extends JFrame {
         
 		appPanel.add(toolboxPanel);
 		
+		
+		
 		//display all the stuff
 		this.pack();
         this.setVisible(true);
@@ -124,5 +128,7 @@ public class ImageLabeller extends JFrame {
 			System.err.println("Image: " + defaultImg);
 			e.printStackTrace();
 		}
+		
+		
 	}
 }
