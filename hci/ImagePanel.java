@@ -1,6 +1,7 @@
 package hci;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
@@ -35,6 +36,7 @@ public class ImagePanel extends JPanel implements MouseListener {
 	 */
 	BufferedImage image = null;
 	
+	ImageLabeller imageLabeller = null;
 	
 	/**
 	 * list of current polygon's vertices 
@@ -49,6 +51,7 @@ public class ImagePanel extends JPanel implements MouseListener {
 	/**
 	 * default constructor, sets up the window properties
 	 */
+	
 	public ImagePanel() {
 		currentPolygon = new ArrayList<Point>();
 		polygonsList = new ArrayList<ArrayList<Point>>();
@@ -73,8 +76,10 @@ public class ImagePanel extends JPanel implements MouseListener {
 	 * @param imageName - path to image
 	 * @throws Exception if error loading the image
 	 */
-	public ImagePanel(String imageName) throws Exception{
+	public ImagePanel(String imageName, ImageLabeller imageLabeller) throws Exception{
 		this();
+		this.imageLabeller = imageLabeller;
+		
 		image = ImageIO.read(new File(imageName));
 		if (image.getWidth() > 800 || image.getHeight() > 600) {
 			int newWidth = image.getWidth() > 800 ? 800 : (image.getWidth() * 600)/image.getHeight();
@@ -228,6 +233,22 @@ public class ImagePanel extends JPanel implements MouseListener {
 	public void openFileBrowser() {
 
 	}
+	
+	public void undo() {
+		ArrayList<Point> polygon = getPolygon();
+		Graphics2D g = (Graphics2D)this.getGraphics();
+		
+		if (polygon.size() > 0) {					
+			
+			polygon.remove(polygon.size()-1);
+			rePaint(g); 
+		}
+		
+		else {
+			JOptionPane.showMessageDialog(imageLabeller,
+		    "Need a new point to undo");
+		}
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -259,7 +280,10 @@ public class ImagePanel extends JPanel implements MouseListener {
 			
 			currentPolygon.add(new Point(x,y));
 			System.out.println(x + " " + y);
-		} 
+		} else if (e.getButton() == MouseEvent.BUTTON3) {
+			System.out.println("right click undo");
+			undo();
+		}
 	}
 
 	@Override

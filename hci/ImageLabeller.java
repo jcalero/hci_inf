@@ -56,7 +56,7 @@ public class ImageLabeller extends JFrame {
 		File file = FileBrowser.open();
 		try {
 			//create a window and display the image
-			imagePanel = new ImagePanel(file.getPath());
+			imagePanel = new ImagePanel(file.getPath(), this);
 			imagePanel.setOpaque(true);
 			appPanel.add(imagePanel);
 		} catch (Exception e) {
@@ -94,7 +94,7 @@ public class ImageLabeller extends JFrame {
 		this.setContentPane(appPanel);
 		
         //Create and set up the image panel.
-		imagePanel = new ImagePanel(imageFilename);
+		imagePanel = new ImagePanel(imageFilename, this);
 		imagePanel.setOpaque(true); //content panes must be opaque
 		
         appPanel.add(imagePanel);
@@ -104,7 +104,6 @@ public class ImageLabeller extends JFrame {
         
         
 		appPanel.add(toolboxPanel);
-		
 		
 		
 		//display all the stuff
@@ -134,7 +133,5 @@ public class ImageLabeller extends JFrame {
 				e1.printStackTrace();
 			}
 		}
-		
-		
 	}
 }

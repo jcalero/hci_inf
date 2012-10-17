@@ -31,10 +31,6 @@ public class ToolBox extends JPanel{
 	ImageLabeller imageLabeller = null;
 	ImagePanel imagePanel = null;
 	
-	
-	
-	
-	
 	// default constructor
 	public ToolBox(ImagePanel imagePanel, ImageLabeller imageLabeller){
 	
@@ -50,8 +46,6 @@ public class ToolBox extends JPanel{
 		quitButton();
 		//redoButton();
 		//saveButton();
-		
-
 	}
 	
 	public void quitButton(){
@@ -164,22 +158,8 @@ public class ToolBox extends JPanel{
 		undoButton.addMouseListener(new MouseListener() {
 		
 			public void mouseClicked(MouseEvent e) {
-					
-					System.out.println("mouse click remove"); 
-					ArrayList<Point> polygon = imagePanel.getPolygon();
-					
-					if (polygon.size() > 0) {					
-						
-						polygon.remove(polygon.size()-1);
-						Graphics g = imagePanel.getGraphics();
-						imagePanel.rePaint(g); 
-					}
-					
-					else {
-						JOptionPane.showMessageDialog(imageLabeller,
-					    "Need a new point to undo");
-						
-					}
+					System.out.println("button click undo"); 
+					imagePanel.undo();
 			}
 					
 			    	
