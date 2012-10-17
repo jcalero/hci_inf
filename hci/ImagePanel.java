@@ -117,15 +117,14 @@ public class ImagePanel extends JPanel implements MouseListener {
 		
 		//display iamge
 		ShowImage();
-		
+		System.out.println("Painting");
 		//display all the completed polygons
 		for(ArrayList<Point> polygon : polygonsList) {
 			drawPolygon(polygon);
 			finishPolygon(polygon);
-		
 		}
 		
-		//shade(g);
+		shade(g);
 		
 		
 		
@@ -141,20 +140,20 @@ public class ImagePanel extends JPanel implements MouseListener {
 		ArrayList<Point> polygon = new ArrayList<Point>();
 		if (polygonsList.size()!=0){
 			
-		
 			for (int i = 0; i<polygonsList.size(); i++) {
+				System.out.println("Filling polygon: " + i);
+				
 				polygon = polygonsList.get(i);
 		
 				Polygon p = new Polygon();
 			
-				for (int j = 0; j<polygon.size(); i++){
+				for (int j = 0; j<polygon.size(); j++){
 					p.addPoint(polygon.get(j).getX(), polygon.get(j).getY());
 				}
-			
-			g2.fill(p);
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-			          0.2f));
-
+				
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+				          0.2f));
+				g2.fillPolygon(p);
 	
 			}
 		

@@ -117,7 +117,8 @@ public class ImageLabeller extends JFrame {
 	 * @param argv path to an image
 	 */
 	public static void main(String argv[]) {
-		String defaultImg = "./images/U1003_0000.jpg";
+//		File defImg = new File()
+		String defaultImg = "." + File.separator + "images" + File.separator + "U1003_0000.jpg";
 		File file = FileBrowser.open();
 		try {
 			//create a window and display the image
@@ -126,7 +127,12 @@ public class ImageLabeller extends JFrame {
 		} catch (Exception e) {
 			System.err.println("Could not open image, opening default.");
 			System.err.println("Image: " + defaultImg);
-			e.printStackTrace();
+			ImageLabeller window = new ImageLabeller();
+			try {
+				window.setupGUI(defaultImg);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		}
 		
 		
