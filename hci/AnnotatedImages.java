@@ -22,6 +22,17 @@ public class AnnotatedImages {
 		polygonList.add(polygon);
 	}
 	
+	public int getPolygonCount() {
+		return nameList.size();
+	}
 	
+	public String getCSVPointList(int index) {
+		String pointList = "";
+		ArrayList<Point> polygon = getPolygon(index);
+		for (int i = 0; i < polygon.size(); i++) {
+			pointList += ";" + polygon.get(i).getX() + "," + polygon.get(i).getY();
+		}
+		return pointList;
+	}
 	
 }

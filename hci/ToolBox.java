@@ -10,7 +10,10 @@ import javax.swing.JPanel;
 
 import java.awt.event.KeyEvent;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -31,13 +34,17 @@ public class ToolBox extends JPanel{
 	ImageLabeller imageLabeller = null;
 	ImagePanel imagePanel = null;
 	
+	AnnotatedImages savedImages = null;
+	
 	// default constructor
 	public ToolBox(ImagePanel imagePanel, ImageLabeller imageLabeller){
 	
 		this.imagePanel = imagePanel;
 		this.imageLabeller = imageLabeller;
 		
+		this.savedImages = imagePanel.savedImage;
 		
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setVisible(true);
 		
 		closeObjButton();
@@ -45,7 +52,7 @@ public class ToolBox extends JPanel{
 		undoButton();
 		quitButton();
 		//redoButton();
-		//saveButton();
+		saveButton();
 	}
 	
 	public void quitButton(){
@@ -101,10 +108,8 @@ public class ToolBox extends JPanel{
 						
 			    		imagePanel.addNewPolygon();
 			    		String message = "Label the image!";
-			    		AnnotatedImages savedImages = new AnnotatedImages();
+			    		//AnnotatedImages savedImages = new AnnotatedImages();
 			    		CustomDialog userInput = new CustomDialog(imageLabeller, imagePanel, message, savedImages);
-			    		
-			    		
 			    		
 			    	} else {
 			    		JOptionPane.showMessageDialog(imageLabeller,
@@ -161,9 +166,7 @@ public class ToolBox extends JPanel{
 					System.out.println("button click undo"); 
 					imagePanel.undo();
 			}
-					
-			    	
-		
+			
 			public void mouseEntered(MouseEvent arg0) {}
 			public void mouseExited(MouseEvent arg0) {}
 			public void mousePressed(MouseEvent arg0) {}
@@ -212,6 +215,34 @@ public class ToolBox extends JPanel{
 			
 	}
 	*/
+	
+	public void saveButton() {
+		JButton saveButton = new JButton("Save");
+		saveButton.setMnemonic(KeyEvent.VK_S);
+		saveButton.setSize(50, 20);
+		saveButton.setEnabled(true);
+		saveButton.setToolTipText("Click to save current work.");
+		
+		saveButton.addMouseListener(new MouseListener() {
+		
+			public void mouseClicked(MouseEvent e) {
+					System.out.println("button click save"); 
+					imagePanel.save(savedImages);
+			}
+			
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}
+		
+		});
+		
+		this.add(saveButton);
+	}
+	
+
+	
+	
 	
 
 	

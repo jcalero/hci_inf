@@ -42,6 +42,8 @@ public class ImageLabeller extends JFrame {
 	 */
 	ImagePanel imagePanel = null;
 	
+	StartPanel startPanel = null;
+	
 	/**
 	 * handles New Object button action
 	 */
@@ -65,10 +67,47 @@ public class ImageLabeller extends JFrame {
 		}
 	}
 	
+	public void loadArchive(ImageLabeller imageLabeller) {
+		String defaultImg = "." + File.separator + "images" + File.separator + "U1003_0000.jpg";
+		try {
+			imageLabeller.setupGUI(defaultImg);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		imagePanel.paint(g); //update image panel
+	}
+	
+	public void setupGUIStart() {
+		this.addWindowListener(new WindowAdapter() {
+		  	public void windowClosing(WindowEvent event) {
+		  		//here we exit the program (maybe we should ask if the user really wants to do it?)
+		  		//maybe we also want to store the polygons somewhere? and read them next time
+		  		System.out.println("Bye bye!");
+		    	System.exit(0);
+		  	}
+		});
+
+		//setup main window panel
+		appPanel = new JPanel();
+		
+		this.setLayout(new BoxLayout(appPanel, BoxLayout.X_AXIS));
+		this.setContentPane(appPanel);
+		
+        //Create and set up the image panel.
+		startPanel = new StartPanel(this);
+		startPanel.setOpaque(true); //content panes must be opaque
+		
+        appPanel.add(startPanel);
+		
+		//display all the stuff
+		this.pack();
+        this.setVisible(true);
 	}
 	
 	/**
@@ -118,11 +157,13 @@ public class ImageLabeller extends JFrame {
 	public static void main(String argv[]) {
 //		File defImg = new File()
 		String defaultImg = "." + File.separator + "images" + File.separator + "U1003_0000.jpg";
-		File file = FileBrowser.open();
+		//File file = FileBrowser.open();
 		try {
 			//create a window and display the image
 			ImageLabeller window = new ImageLabeller();
-			window.setupGUI(file.getPath());
+			window.setupGUI(defaultImg);
+			//window.setupGUI(file.getPath());
+			//window.setupGUIStart();
 		} catch (Exception e) {
 			System.err.println("Could not open image, opening default.");
 			System.err.println("Image: " + defaultImg);

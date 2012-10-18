@@ -28,6 +28,7 @@ public class CustomDialog extends JDialog {
 			
 			System.out.println(userInput);
 			ArrayList<Point> polygon = imagePanel.getPolygon();
+			System.out.println(polygon.size());
 			savedImage.addImage(userInput, polygon);
 			System.out.println(savedImage.getName(0));
 		}
