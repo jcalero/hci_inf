@@ -5,7 +5,13 @@ import javax.swing.JOptionPane;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 
 import java.awt.event.KeyEvent;
@@ -35,6 +41,7 @@ public class ToolBox extends JPanel{
 	ImagePanel imagePanel = null;
 	
 	AnnotatedImages savedImages = null;
+
 	
 	// default constructor
 	public ToolBox(ImagePanel imagePanel, ImageLabeller imageLabeller){
@@ -53,6 +60,61 @@ public class ToolBox extends JPanel{
 		quitButton();
 		//redoButton();
 		saveButton();
+		resetButton();
+		//textBox();
+	}
+/*	
+	public void textBox(){
+		JTextArea textArea = new JTextArea();
+		
+		if (savedImages!=null){
+		
+			JScrollPane scrollPane = new JScrollPane();
+			scrollPane.add(textArea);
+			this.add(scrollPane, BorderLayout.NORTH);
+		
+		}
+		
+		public void showInfo(String data) {
+		    textArea.append(data);
+		    this.validate();
+		}
+	}
+*/	
+	public void resetButton(){
+		
+		JButton resetButton = new JButton("reset");
+		resetButton.setMnemonic(KeyEvent.VK_N);
+		resetButton.setSize(50, 20);
+		resetButton.setEnabled(true);
+		resetButton.setToolTipText("QuitProgram");
+		
+		
+		
+		resetButton.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+				
+				System.out.println("mouse click reset");		
+			    int answer = JOptionPane.showConfirmDialog(imageLabeller, "Are you sure you want to reset, you will lose all changes :(", null, JOptionPane.YES_NO_OPTION);
+			    //save all records to file
+			    if (answer == JOptionPane.YES_OPTION){
+			    	
+			    	imagePanel.resetScreen();
+			    	savedImages = null;
+			    	imagePanel.save(savedImages);
+			    	
+			    	System.out.println("TESTTEST");
+			    }
+			    
+			}
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}
+		
+		});
+		
+		this.add(resetButton, BorderLayout.SOUTH);
 	}
 	
 	public void quitButton(){
@@ -108,7 +170,7 @@ public class ToolBox extends JPanel{
 						
 			    		imagePanel.addNewPolygon();
 			    		String message = "Label the image!";
-			    		//AnnotatedImages savedImages = new AnnotatedImages();
+			    		
 			    		CustomDialog userInput = new CustomDialog(imageLabeller, imagePanel, message, savedImages);
 			    		
 			    	} else {
@@ -226,9 +288,14 @@ public class ToolBox extends JPanel{
 		saveButton.addMouseListener(new MouseListener() {
 		
 			public void mouseClicked(MouseEvent e) {
+				
+				if (savedImages!=null){
 					System.out.println("button click save"); 
 					imagePanel.save(savedImages);
-			}
+					JOptionPane.showMessageDialog(imageLabeller, "saved");
+			
+				} 
+			}	
 			
 			public void mouseEntered(MouseEvent arg0) {}
 			public void mouseExited(MouseEvent arg0) {}

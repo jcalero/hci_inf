@@ -28,10 +28,7 @@ public class ImageLabeller extends JFrame {
 	 * main window panel
 	 */
 	JPanel appPanel = null;
-	
-	
-	
-	
+
 	/**
 	 * toolbox - put all buttons and stuff here!
 	 */
@@ -51,6 +48,11 @@ public class ImageLabeller extends JFrame {
 		imagePanel.addNewPolygon();
 	}
 	
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		imagePanel.paint(g); //update image panel
+	}
 	/**
 	 * handles File browser button action
 	 */
@@ -77,22 +79,10 @@ public class ImageLabeller extends JFrame {
 		}
 	}
 	
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		imagePanel.paint(g); //update image panel
-	}
+
 	
 	public void setupGUIStart() {
-		this.addWindowListener(new WindowAdapter() {
-		  	public void windowClosing(WindowEvent event) {
-		  		//here we exit the program (maybe we should ask if the user really wants to do it?)
-		  		//maybe we also want to store the polygons somewhere? and read them next time
-		  		System.out.println("Bye bye!");
-		    	System.exit(0);
-		  	}
-		});
-
+		
 		//setup main window panel
 		appPanel = new JPanel();
 		
@@ -108,6 +98,16 @@ public class ImageLabeller extends JFrame {
 		//display all the stuff
 		this.pack();
         this.setVisible(true);
+        
+        this.addWindowListener(new WindowAdapter() {
+		  	public void windowClosing(WindowEvent event) {
+		  		//here we exit the program (maybe we should ask if the user really wants to do it?)
+		  		//maybe we also want to store the polygons somewhere? and read them next time
+		  		System.out.println("Bye bye!");
+		    	System.exit(0);
+		  	}
+		});
+
 	}
 	
 	/**
@@ -116,6 +116,7 @@ public class ImageLabeller extends JFrame {
 	 * @throws Exception
 	 */
 	public void setupGUI(String imageFilename) throws Exception {
+		
 		this.addWindowListener(new WindowAdapter() {
 		  	public void windowClosing(WindowEvent event) {
 		  		//here we exit the program (maybe we should ask if the user really wants to do it?)

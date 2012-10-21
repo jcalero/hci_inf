@@ -84,6 +84,20 @@ public class ImagePanel extends JPanel implements MouseListener {
 		return currentPolygon;
 	}
 
+	public void resetScreen(){
+		//ArrayList<Point> currentPoly = getPolygon();
+		currentPolygon = null;
+		
+		polygonsList = null;
+		
+		Graphics2D g = (Graphics2D) this.getGraphics();
+		g.setColor(Color.RED);
+		paint(g);
+		//System.out.println("TESTTEST");
+		//System.out.println(polygonsList.size());
+		currentPolygon = new ArrayList<Point>();
+		polygonsList = new ArrayList<ArrayList<Point>>();
+	}
 	/**
 	 * extended constructor - loads image to be labelled
 	 * 
@@ -221,17 +235,6 @@ public class ImagePanel extends JPanel implements MouseListener {
 		return hexString;
 	}
 
-	public void rePaint(Graphics g) {
-		ShowImage();
-		for (ArrayList<Point> polygon : polygonsList) {
-			drawPolygon(polygon);
-
-		}
-
-		// display current polygon
-		drawPolygon(currentPolygon);
-
-	}
 
 	@Override
 	public void paint(Graphics g) {
@@ -241,12 +244,22 @@ public class ImagePanel extends JPanel implements MouseListener {
 		ShowImage();
 		System.out.println("Painting");
 		// display all the completed polygons
-		for (ArrayList<Point> polygon : polygonsList) {
-			drawPolygon(polygon);
-			finishPolygon(polygon);
+	
+		if (currentPolygon!=null){
+			ArrayList<Point> currentPoly = getPolygon();
+			drawPolygon(currentPoly);		
+		}
+		
+		if (polygonsList!=null){
+			for (ArrayList<Point> polygon : polygonsList) {
+			
+				drawPolygon(polygon);		
+				finishPolygon(polygon);
+			}
+			shade(g);
 		}
 
-		shade(g);
+	
 
 		// display current polygon
 
@@ -265,6 +278,8 @@ public class ImagePanel extends JPanel implements MouseListener {
 				polygon = polygonsList.get(i);
 
 				Polygon p = new Polygon();
+				
+			
 
 				for (int j = 0; j < polygon.size(); j++) {
 					p.addPoint(polygon.get(j).getX(), polygon.get(j).getY());
@@ -286,6 +301,7 @@ public class ImagePanel extends JPanel implements MouseListener {
 	 *            to be displayed
 	 */
 	public void drawPolygon(ArrayList<Point> polygon) {
+		
 		Graphics2D g = (Graphics2D) this.getGraphics();
 		g.setColor(Color.RED);
 		for (int i = 0; i < polygon.size(); i++) {
@@ -336,7 +352,7 @@ public class ImagePanel extends JPanel implements MouseListener {
 	 */
 	public void addNewPolygon() {
 		// finish the current polygon if any
-		if (currentPolygon.size() != 0) {
+		if (currentPolygon.size() >= 3) {
 
 			polygonsList.add(currentPolygon);
 			Graphics2D g = (Graphics2D) this.getGraphics();
@@ -359,14 +375,16 @@ public class ImagePanel extends JPanel implements MouseListener {
 
 		if (polygon.size() > 0) {
 
-			polygon.remove(polygon.size() - 1);
-			rePaint(g);
+			polygon.remove(polygon.size()-1);
+			
 		}
 
 		else {
 			JOptionPane.showMessageDialog(imageLabeller,
 					"Need a new point to undo");
 		}
+		
+		paint(g);
 	}
 
 	@Override

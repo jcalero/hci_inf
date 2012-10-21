@@ -13,6 +13,10 @@ public class AnnotatedImages {
 		return nameList.get(index);
 	}
 	
+	public ArrayList<String> getNameList(){
+		return nameList;
+	}
+	
 	public ArrayList<Point> getPolygon(int index){
 		return polygonList.get(index);
 	}
