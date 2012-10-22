@@ -3,6 +3,8 @@ package hci;
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -10,8 +12,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.SwingUtilities;
 
 
 import java.awt.event.KeyEvent;
@@ -23,6 +27,7 @@ import java.io.IOException;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -41,7 +46,10 @@ public class ToolBox extends JPanel{
 	ImagePanel imagePanel = null;
 	
 	AnnotatedImages savedImages = null;
-
+	
+	private DefaultListModel names;
+	private JList nameJList;
+	private JScrollPane scrollPane;
 	
 	// default constructor
 	public ToolBox(ImagePanel imagePanel, ImageLabeller imageLabeller){
@@ -50,6 +58,10 @@ public class ToolBox extends JPanel{
 		this.imageLabeller = imageLabeller;
 		
 		this.savedImages = imagePanel.savedImage;
+		
+		
+		textBox();
+		
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setVisible(true);
@@ -61,26 +73,56 @@ public class ToolBox extends JPanel{
 		//redoButton();
 		saveButton();
 		resetButton();
-		//textBox();
+		
 	}
-/*	
+	
 	public void textBox(){
-		JTextArea textArea = new JTextArea();
 		
-		if (savedImages!=null){
 		
-			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.add(textArea);
-			this.add(scrollPane, BorderLayout.NORTH);
+		JPanel textPanel = new JPanel();	
+		textPanel.setLayout(new BorderLayout());
+		textPanel.setBackground(Color.BLACK);
+		textPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		ArrayList<String> savedNames = savedImages.getNameList();
 		
+		names = new DefaultListModel();
+		names.addElement("fake test");
+		names.addElement("22nd jump street");
+		names.addElement("cookie monster");
+		
+		for (int i = 0; i<savedNames.size(); i++){
+			names.addElement(savedNames.get(i));
 		}
+
+	
+		nameJList = new JList(names);
+		nameJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		nameJList.setSelectedIndex(0);
+		nameJList.setVisibleRowCount(5);
+		nameJList.addListSelectionListener(new ListSelectionListener(){
+			public void valueChanged(ListSelectionEvent e) {
+				if (!e.getValueIsAdjusting()){
+					//highlight selected image
+				}
+			}
+		});
+	
+	//	ArrayList<JLabel> nameList = new ArrayList<JLabel>();
+		//create a scrollPane and add JList 
+		scrollPane = new JScrollPane();
+		scrollPane.setPreferredSize(new Dimension(150, 150));
+		scrollPane.setViewportView(nameJList);
+	//	scrollPane.add(nameJList);
+	//	scrollPane.getViewport().add(nameJList);
+		this.add(scrollPane);
+		textPanel.add(scrollPane);
 		
-		public void showInfo(String data) {
-		    textArea.append(data);
-		    this.validate();
-		}
-	}
-*/	
+		this.add(textPanel,BorderLayout.NORTH);
+		
+		
+	}	
+
 	public void resetButton(){
 		
 		JButton resetButton = new JButton("reset");
@@ -100,10 +142,15 @@ public class ToolBox extends JPanel{
 			    if (answer == JOptionPane.YES_OPTION){
 			    	
 			    	imagePanel.resetScreen();
+			    	
+			    	//clear the scrollpanel
+			    	names.removeAllElements();
+			    	
 			    	savedImages = null;
 			    	imagePanel.save(savedImages);
 			    	
-			    	System.out.println("TESTTEST");
+			    	
+			    	
 			    }
 			    
 			}
@@ -172,6 +219,14 @@ public class ToolBox extends JPanel{
 			    		String message = "Label the image!";
 			    		
 			    		CustomDialog userInput = new CustomDialog(imageLabeller, imagePanel, message, savedImages);
+			    		
+			    		names.addElement(userInput.getUserInput());
+			    		int lastIndex = nameJList.getLastVisibleIndex();
+			    		nameJList.setSelectedIndex(lastIndex);
+			    		nameJList.ensureIndexIsVisible(lastIndex);
+			    	//	scrollPane.setViewportView(nameJList);
+			    		scrollPane.revalidate();
+			    		
 			    		
 			    	} else {
 			    		JOptionPane.showMessageDialog(imageLabeller,

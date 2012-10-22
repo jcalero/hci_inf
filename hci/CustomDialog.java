@@ -22,11 +22,10 @@ public class CustomDialog extends JDialog {
 	public CustomDialog(ImageLabeller imageLabeller, ImagePanel imagePanel, String message, AnnotatedImages savedImage) {
 		super(imageLabeller, message, true);
 		
-		userInput = JOptionPane.showInputDialog("Enter object Label", JOptionPane.OK_CANCEL_OPTION);
+		String userInput = JOptionPane.showInputDialog("Enter object Label", JOptionPane.OK_CANCEL_OPTION);
 		
 		if (userInput != null){
 			
-			System.out.println(userInput);
 			ArrayList<Point> polygon = imagePanel.getPolygon();
 			System.out.println(polygon.size());
 			savedImage.addImage(userInput, polygon);
